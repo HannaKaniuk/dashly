@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_product_variation_groups",
+  "info": {
+    "displayName": "Variation Group",
+    "description": "Named variation group (e.g. Skin type, Size, Formula)",
+    "icon": "layer"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "displayStyle": {
+      "type": "enumeration",
+      "enum": ["pills", "list"],
+      "default": "pills"
+    },
+    "options": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.variation-option"
+    }
+  }
+}

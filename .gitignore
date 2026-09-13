@@ -1,0 +1,17 @@
+node_modules
+.DS_Store
+.env
+.env.local
+*.log
+.turbo
+.next
+frontend/.next
+frontend/node_modules
+cms/node_modules
+cms/.tmp
+cms/dist
+cms/build
+cms/.strapi
+cms/public/uploads
+.idea
+.vscode

@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "announcement_messages",
+  "info": {
+    "singularName": "announcement-message",
+    "pluralName": "announcement-messages",
+    "displayName": "Announcement Message",
+    "description": "Rotating messages for the top announcement bar"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "text": {
+      "type": "string",
+      "required": true
+    },
+    "order": {
+      "type": "integer",
+      "default": 0,
+      "required": true
+    }
+  }
+}

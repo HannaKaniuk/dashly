@@ -1,0 +1,72 @@
+{
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "singularName": "product",
+    "pluralName": "products",
+    "displayName": "Product",
+    "description": "Shop products with flexible pricing and variations"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "volume": {
+      "type": "string",
+      "required": false
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images"]
+    },
+    "badges": {
+      "type": "json",
+      "required": false
+    },
+    "pricingMode": {
+      "type": "enumeration",
+      "enum": ["percent_off", "sale_price"],
+      "default": "percent_off",
+      "required": true
+    },
+    "price": {
+      "type": "decimal",
+      "required": false
+    },
+    "discountPercent": {
+      "type": "decimal",
+      "required": false
+    },
+    "compareAtPrice": {
+      "type": "decimal",
+      "required": false
+    },
+    "salePrice": {
+      "type": "decimal",
+      "required": false
+    },
+    "order": {
+      "type": "integer",
+      "default": 0,
+      "required": true
+    },
+    "variations": {
+      "type": "component",
+      "repeatable": true,
+      "component": "product.variation-group"
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product-category.product-category",
+      "inversedBy": "products"
+    }
+  }
+}

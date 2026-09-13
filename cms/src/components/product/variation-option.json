@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_product_variation_options",
+  "info": {
+    "displayName": "Variation Option",
+    "description": "A single option within a variation group",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"]
+    },
+    "optionDiscountPercent": {
+      "type": "decimal",
+      "required": false
+    }
+  }
+}

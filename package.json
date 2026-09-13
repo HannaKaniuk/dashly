@@ -1,0 +1,21 @@
+{
+  "name": "lumea-dashly",
+  "private": true,
+  "version": "1.0.0",
+  "description": "LUMEA Home Page — Next.js + Strapi + PostgreSQL (Dashly Studio test)",
+  "scripts": {
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "dev:cms": "npm run develop --prefix cms",
+    "dev:web": "npm run dev --prefix frontend",
+    "build:cms": "npm run build --prefix cms",
+    "build:web": "npm run build --prefix frontend",
+    "start:cms": "npm run start --prefix cms",
+    "start:web": "npm run start --prefix frontend",
+    "dev": "npm run db:up && concurrently -n cms,web -c cyan,magenta \"npm run dev:cms\" \"npm run dev:web\"",
+    "dev:all": "npm run db:up && concurrently -n cms,web -c cyan,magenta \"npm run dev:cms\" \"npm run dev:web\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.4"
+  }
+}
