@@ -59,6 +59,26 @@ body {
   outline-offset: 3px;
 }
 
+a,
+button,
+[role="button"],
+label[for],
+select,
+summary,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+input[type="checkbox"],
+input[type="radio"],
+input[type="file"] {
+  cursor: pointer;
+}
+
+button:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
 .soft-shadow {
   box-shadow: var(--soft-shadow);
 }
@@ -67,10 +87,12 @@ body {
   box-shadow: var(--card-shadow);
 }
 
-/* CTA hover: gradient rises into the button */
+/* CTA hover: gradient rises into the button (fully clipped at rest) */
 .cta-gradient {
   position: absolute;
-  inset: auto 0 -120% 0;
+  left: 0;
+  right: 0;
+  top: 100%;
   height: 220%;
   pointer-events: none;
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
