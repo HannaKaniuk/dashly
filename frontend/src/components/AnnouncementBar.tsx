@@ -46,7 +46,7 @@ export function AnnouncementBar({ messages, className }: Props) {
           <p
             key={msg.documentId}
             className={cn(
-              "absolute inset-x-0 top-0 text-center text-base font-bold leading-[1.1] text-white transition-all duration-500",
+              "absolute inset-x-0 top-0 text-center text-base font-normal leading-[1.1] text-white transition-all duration-500 md:font-bold",
               i === index
                 ? "translate-y-0 opacity-100"
                 : "translate-y-3 opacity-0",

@@ -14,7 +14,7 @@ export default async function HomePage() {
   ]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center bg-white">
+    <main className="flex min-h-screen w-full flex-col items-stretch bg-white">
       <Hero announcements={announcements} />
       <HowItWorks products={products} categories={categories} />
     </main>

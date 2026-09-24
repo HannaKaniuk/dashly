@@ -23,10 +23,52 @@ const sizeClasses: Record<ButtonSize, string> = {
 
 const variantClasses: Record<ButtonVariant, string> = {
   dark: "bg-neutral-900 text-white",
-  light: "bg-neutral-200 text-neutral-900",
-  mint: "bg-brand-200 text-neutral-900",
+  light: "bg-neutral-200 text-neutral-900 hover:text-brand-900",
+  /* Figma green + “black hover” overlay (1:106 → 1:136) */
+  mint: "bg-brand-500 text-white",
   ghost: "bg-transparent text-neutral-900",
 };
+
+/** Concentric rings — Figma “vibrant grad” / “vibrant grad black” */
+function CtaRings({ variant }: { variant: ButtonVariant }) {
+  if (variant === "ghost") {
+    return (
+      <span className="cta-rings cta-rings--ghost" aria-hidden>
+        <span className="cta-ring cta-ring--1" />
+      </span>
+    );
+  }
+
+  if (variant === "light") {
+    return (
+      <span className="cta-rings cta-rings--muted" aria-hidden>
+        <span className="cta-ring cta-ring--1" />
+      </span>
+    );
+  }
+
+  if (variant === "mint") {
+    /* vibrant grad black — e3e8e9 → 858585 → 505050 → 212721 */
+    return (
+      <span className="cta-rings cta-rings--dark" aria-hidden>
+        <span className="cta-ring cta-ring--1" />
+        <span className="cta-ring cta-ring--2" />
+        <span className="cta-ring cta-ring--3" />
+        <span className="cta-ring cta-ring--4" />
+      </span>
+    );
+  }
+
+  /* dark button — brand greens rise in (1:36 → 1:62) */
+  return (
+    <span className="cta-rings cta-rings--brand" aria-hidden>
+      <span className="cta-ring cta-ring--1" />
+      <span className="cta-ring cta-ring--2" />
+      <span className="cta-ring cta-ring--3" />
+      <span className="cta-ring cta-ring--4" />
+    </span>
+  );
+}
 
 function ArrowUpRight({ className }: { className?: string }) {
   return (
@@ -80,7 +122,7 @@ export function Button({
     <button
       type={type}
       className={cn(
-        "group/cta relative inline-flex items-center justify-center overflow-hidden font-bold transition-colors duration-300",
+        "group/cta relative inline-flex items-center justify-center overflow-hidden font-bold transition-colors duration-[400ms] ease-in-out",
         sizeClasses[size],
         variantClasses[variant],
         fullWidth && "w-full",
@@ -88,15 +130,7 @@ export function Button({
       )}
       {...props}
     >
-      <span
-        className={cn(
-          "cta-gradient",
-          variant === "light" && "cta-gradient--muted",
-          variant === "mint" && "cta-gradient--dark",
-          variant === "ghost" && "cta-gradient--ghost",
-        )}
-        aria-hidden
-      />
+      <CtaRings variant={variant} />
       <span className="relative z-10 inline-flex items-center gap-1.5">
         {children}
         {icon === "arrow-up-right" && <ArrowUpRight />}

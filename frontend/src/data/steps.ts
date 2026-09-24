@@ -8,7 +8,18 @@ export type StepDef = {
   image: string;
   imageAlt: string;
   accent: string;
+  /** Desktop 1440 card fill (Figma 50:3740+) */
   bg: string;
+  border?: string;
+  descColor?: string;
+  /** Mobile Figma assets / styles (1:11001) */
+  mobileImage: string;
+  mobileTitleSize: "40" | "36" | "50";
+  mobileTitleWeight: "normal" | "bold";
+  mobileDescSize: "18" | "16";
+  mobileDescColor: string;
+  mobileBorder: string;
+  mobileBgCss: string;
 };
 
 export const STEPS: StepDef[] = [
@@ -24,6 +35,15 @@ export const STEPS: StepDef[] = [
     imageAlt: "Hands cleansing skin with a cotton pad",
     accent: "#63cc96",
     bg: "#f3f5f5",
+    border: "#f3f5f5",
+    descColor: "#858585",
+    mobileImage: "/images/steps/mobile/cleanse.png",
+    mobileTitleSize: "40",
+    mobileTitleWeight: "normal",
+    mobileDescSize: "18",
+    mobileDescColor: "#858585",
+    mobileBorder: "#f3f5f5",
+    mobileBgCss: "#f3f5f5",
   },
   {
     id: "treat",
@@ -35,8 +55,18 @@ export const STEPS: StepDef[] = [
     cta: "Shop treatments",
     image: "/images/steps/treat.jpg",
     imageAlt: "Skincare bottles and serum dropper",
-    accent: "#2f9e6e",
-    bg: "#e5f7ed",
+    accent: "#63cc96",
+    bg: "linear-gradient(141.34deg, #e5f7ed 1.43%, #92dbb6 100.66%)",
+    border: "#f3f5f5",
+    descColor: "#858585",
+    mobileImage: "/images/steps/mobile/treat.png",
+    mobileTitleSize: "36",
+    mobileTitleWeight: "normal",
+    mobileDescSize: "16",
+    mobileDescColor: "#858585",
+    mobileBorder: "#f3f5f5",
+    mobileBgCss:
+      "linear-gradient(137.05deg, #e5f7ed 1.43%, #92dbb6 100.66%)",
   },
   {
     id: "moisturise",
@@ -48,8 +78,17 @@ export const STEPS: StepDef[] = [
     cta: "Shop moisturisers",
     image: "/images/steps/moisturise.jpg",
     imageAlt: "Woman applying moisturiser",
-    accent: "#00c3d0",
-    bg: "#f7f4ef",
+    accent: "#63cc96",
+    bg: "#f3f5f5",
+    border: "#f3f5f5",
+    descColor: "#858585",
+    mobileImage: "/images/steps/mobile/moisturise.png",
+    mobileTitleSize: "36",
+    mobileTitleWeight: "normal",
+    mobileDescSize: "18",
+    mobileDescColor: "#858585",
+    mobileBorder: "#e5f7ed",
+    mobileBgCss: "#f3f5f5",
   },
   {
     id: "protect",
@@ -61,8 +100,17 @@ export const STEPS: StepDef[] = [
     cta: "Shop SPF",
     image: "/images/steps/protect.jpg",
     imageAlt: "Woman applying SPF cream",
-    accent: "#e08aa4",
-    bg: "#fdecef",
+    accent: "#63cc96",
+    bg: "radial-gradient(ellipse 68% 70% at 47% 87%, rgba(254,203,228,0.55) 0%, rgba(236,163,179,0.4) 36%, rgba(217,122,129,0.18) 55%, transparent 72%), #ffffff",
+    border: "#f3f5f5",
+    descColor: "#565b5a",
+    mobileImage: "/images/steps/mobile/protect.png",
+    mobileTitleSize: "50",
+    mobileTitleWeight: "bold",
+    mobileDescSize: "18",
+    mobileDescColor: "#565b5a",
+    mobileBorder: "#f3f5f5",
+    mobileBgCss: "#ffe3f1",
   },
 ];
 

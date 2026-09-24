@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope, Inter } from "next/font/google";
+import { Manrope, Inter, Caveat } from "next/font/google";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -12,6 +12,12 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["700"],
+});
+
+const caveat = Caveat({
+  variable: "--font-caveat-family",
+  subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -37,7 +43,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${manrope.variable} ${inter.variable} antialiased`}>
+      <body
+        className={`${manrope.variable} ${inter.variable} ${caveat.variable} antialiased`}
+      >
         {children}
       </body>
     </html>

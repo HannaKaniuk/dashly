@@ -1,18 +1,14 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { STEPS } from "@/data/steps";
 import type { Product, ProductCategory } from "@/lib/strapi";
 import { CategoryTabs } from "./CategoryTabs";
 import { ProductCard } from "./ProductCard";
 import { StepCard } from "./StepCard";
+import { MobileStepCard } from "./MobileStepCard";
+import { ProductsOverlay } from "./ProductsOverlay";
 import { cn } from "@/lib/cn";
 
 type Props = {
@@ -27,9 +23,6 @@ export function HowItWorks({ products, categories }: Props) {
   const sectionRef = useRef<HTMLElement>(null);
   const shelfRef = useRef<HTMLElement>(null);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const closeBtnRef = useRef<HTMLButtonElement>(null);
-  const lastFocusRef = useRef<HTMLElement | null>(null);
 
   const [activeStep, setActiveStep] = useState(0);
   const [compact, setCompact] = useState(0);
@@ -38,7 +31,6 @@ export function HowItWorks({ products, categories }: Props) {
   );
   const [overlayOpen, setOverlayOpen] = useState(false);
   const [overlayStep, setOverlayStep] = useState(0);
-  const scrollLockY = useRef(0);
 
   useEffect(() => {
     if (!activeCategoryId && categories[0]) {
@@ -48,6 +40,8 @@ export function HowItWorks({ products, categories }: Props) {
 
   useEffect(() => {
     const onScroll = () => {
+      if (window.matchMedia("(max-width: 1023px)").matches) return;
+
       const anchor = STICKY_BASE + 24;
       const offsets = stepRefs.current.map((el) => {
         if (!el) return Number.POSITIVE_INFINITY;
@@ -64,7 +58,6 @@ export function HowItWorks({ products, categories }: Props) {
           1,
           Math.max(0, (anchor - first.getBoundingClientRect().top) / span),
         );
-        // Stronger compact so step bottoms can meet product column visual
         setCompact(progress * 18);
       }
     };
@@ -81,57 +74,6 @@ export function HowItWorks({ products, categories }: Props) {
   const closeOverlay = useCallback(() => {
     setOverlayOpen(false);
   }, []);
-
-  useEffect(() => {
-    if (!overlayOpen) {
-      lastFocusRef.current?.focus?.();
-      return;
-    }
-
-    lastFocusRef.current = document.activeElement as HTMLElement | null;
-    scrollLockY.current = window.scrollY;
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollLockY.current}px`;
-    document.body.style.width = "100%";
-
-    const t = window.setTimeout(() => closeBtnRef.current?.focus(), 50);
-
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        closeOverlay();
-        return;
-      }
-      if (e.key !== "Tab" || !overlayRef.current) return;
-
-      const focusables = overlayRef.current.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-      );
-      const list = Array.from(focusables).filter(
-        (el) => !el.hasAttribute("disabled") && el.tabIndex !== -1,
-      );
-      if (!list.length) return;
-      const first = list[0];
-      const last = list[list.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    };
-
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      window.clearTimeout(t);
-      document.removeEventListener("keydown", onKeyDown);
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.width = "";
-      window.scrollTo(0, scrollLockY.current);
-    };
-  }, [overlayOpen, closeOverlay]);
 
   const filteredProducts = useMemo(() => {
     if (!activeCategoryId) return products;
@@ -152,210 +94,187 @@ export function HowItWorks({ products, categories }: Props) {
     setOverlayOpen(true);
   };
 
-  const stackGap =
-    "clamp(7.5rem, 18vh, 16rem)";
+  const stackGap = "clamp(7.5rem, 18vh, 16rem)";
 
   return (
     <section
       id="how-it-works"
       ref={sectionRef}
-      className="relative w-full max-w-[1440px] px-4 pb-24 pt-14 md:px-5 md:pb-32 md:pt-20"
-      aria-labelledby="how-it-works-heading"
+      className="relative w-full"
+      aria-label="How it works"
     >
-      <div className="mx-auto flex w-full max-w-[1280px] flex-col items-center gap-10 md:gap-20">
-        <div className="card-shadow flex w-full max-w-[661px] flex-col items-center gap-3 rounded-[200px] bg-gradient-to-b from-[#f3f5f5] to-[#f5fcfd] px-6 py-6 text-center md:px-40 md:py-7">
-          <h2
-            id="how-it-works-heading"
-            className="flex items-center gap-1.5 text-[28px] font-bold leading-none text-neutral-900 md:text-[38px]"
-          >
-            How it
-            <span
-              className="inline-flex size-7 items-center justify-center md:size-8"
-              aria-hidden
-            >
-              <svg viewBox="0 0 32 32" className="size-full" fill="none">
-                <path
-                  d="M16 5.5l2.1 6.5H25l-5.3 3.9 2 6.6L16 18.6l-5.7 3.9 2-6.6L7 12h6.9L16 5.5z"
-                  stroke="#63cc96"
-                  strokeWidth="1.6"
-                  strokeLinejoin="round"
+      {/* ── Mobile — exact at 375 (px-3.5), fluid full-width up to lg ─ */}
+      <div className="mx-auto flex w-full flex-col items-center px-[clamp(0.875rem,3.75vw,1.25rem)] pb-8 pt-[clamp(4rem,14vw,6.375rem)] lg:hidden">
+        <div className="flex w-full flex-col items-center gap-10">
+          <div className="flex w-full flex-col items-center gap-3">
+            <h2 className="flex items-center gap-1.5 text-[clamp(1.5rem,8vw,1.875rem)] font-normal leading-none text-neutral-900">
+              How it
+              <span
+                className="relative inline-flex size-8 shrink-0"
+                aria-hidden
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/icons/mobile/star.svg"
+                  alt=""
+                  width={32}
+                  height={32}
+                  className="size-8"
                 />
-              </svg>
-            </span>
-            <span className="text-brand-500">works</span>
-          </h2>
-          <p className="text-base font-medium text-neutral-800 md:text-lg">
-            4 simple steps to healthier-looking skin
-          </p>
-        </div>
+              </span>
+              <span className="text-brand-500">works</span>
+            </h2>
+            <p className="max-w-[219px] text-center text-[18px] font-medium leading-[1.2] text-neutral-800">
+              4 simple steps to healthier-looking skin
+            </p>
+          </div>
 
-        <div className="grid w-full gap-10 lg:grid-cols-[minmax(0,500px)_minmax(0,1fr)] lg:items-start lg:gap-10">
-          <div className="relative flex flex-col">
-            {STEPS.map((step, index) => {
-              const stickyTop = STICKY_BASE + index * STICKY_STEP;
-              const coverDepth = Math.max(0, activeStep - index);
-              return (
-                <div
-                  key={step.id}
-                  ref={(el) => {
-                    stepRefs.current[index] = el;
-                  }}
-                  className="sticky"
-                  style={{
-                    top: `clamp(0.75rem, ${stickyTop}px, 28vh)`,
-                    marginBottom:
-                      index === STEPS.length - 1 ? 0 : stackGap,
-                    zIndex: index + 1,
-                    paddingBottom: index === STEPS.length - 1 ? 0 : "1.5rem",
-                  }}
-                >
-                  <StepCard
-                    step={step}
-                    index={index}
-                    isCovered={activeStep > index}
-                    coverDepth={coverDepth}
-                    compactPadding={compact}
-                    onSelect={() => scrollToStep(index)}
-                    onShop={() => {
-                      if (window.matchMedia("(max-width: 1023px)").matches) {
-                        openOverlay(index);
-                      } else {
+          {/* Stacked cards — Figma overlap -290 at 375 */}
+          <div className="relative flex w-full flex-col items-start">
+            {STEPS.map((step, index) => (
+              <motion.div
+                key={step.id}
+                className={cn(
+                  "relative w-full",
+                  index < STEPS.length - 1 && "mb-[-290px]",
+                )}
+                style={{ zIndex: index + 1 }}
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.35 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 260,
+                  damping: 28,
+                  delay: index * 0.06,
+                }}
+              >
+                <MobileStepCard
+                  step={step}
+                  index={index}
+                  onShop={() => openOverlay(index)}
+                />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Desktop — exact at 1440 (5.556vw → 80px / content 1280), fluid above */}
+      <div className="relative hidden w-full pb-32 pt-[160px] lg:block">
+        <div className="mx-auto flex w-[min(100%,88.8889%)] flex-col items-center gap-[clamp(3rem,6vw,5rem)] px-4 lg:px-0">
+          {/* Title group — Figma 50:3725; 661/1440 ≈ 45.9vw */}
+          <div className="card-shadow flex w-full max-w-[45.9vw] flex-col items-center gap-3 rounded-[200px] bg-gradient-to-b from-[#f3f5f5] from-[11.5%] to-[#f5fcfd] to-[104.6%] px-[clamp(2rem,11vw,12rem)] py-7 text-center">
+            <h2 className="flex items-center gap-1.5 text-[clamp(1.75rem,3vw,2.375rem)] font-bold leading-none text-neutral-900">
+              How it
+              <span
+                className="inline-flex size-8 items-center justify-center text-brand-500"
+                aria-hidden
+              >
+                <svg viewBox="0 0 32 32" className="size-8" fill="none">
+                  <path
+                    d="M16.5514 23.8416L22.8558 27.8358C23.6617 28.3464 24.6622 27.587 24.4231 26.6463L22.6016 19.481C22.5503 19.2815 22.5564 19.0715 22.6191 18.8752C22.6819 18.6789 22.7987 18.5044 22.9563 18.3716L28.6097 13.6661C29.3525 13.0478 28.9691 11.815 28.0147 11.7531L20.6318 11.2739C20.4329 11.2597 20.2422 11.1893 20.0818 11.0709C19.9214 10.9525 19.7979 10.791 19.7258 10.6051L16.9722 3.67098C16.8974 3.47371 16.7643 3.30388 16.5906 3.18403C16.417 3.06419 16.211 3.00001 16 3.00001C15.789 3.00001 15.583 3.06419 15.4094 3.18403C15.2357 3.30388 15.1026 3.47371 15.0278 3.67098L12.2742 10.6051C12.2021 10.791 12.0786 10.9525 11.9182 11.0709C11.7578 11.1893 11.5671 11.2597 11.3682 11.2739L3.98525 11.7531C3.03087 11.815 2.64746 13.0478 3.39029 13.6661L9.04371 18.3716C9.20126 18.5044 9.31813 18.6789 9.38087 18.8752C9.44362 19.0715 9.44969 19.2815 9.3984 19.481L7.70918 26.1261C7.42222 27.2549 8.62287 28.1661 9.5899 27.5534L15.4486 23.8416C15.6134 23.7367 15.8047 23.681 16 23.681C16.1953 23.681 16.3866 23.7367 16.5514 23.8416Z"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+              <span className="text-brand-500">works</span>
+            </h2>
+            <p className="text-lg font-bold leading-[1.2] text-neutral-800">
+              4 simple steps to healthier-looking skin
+            </p>
+          </div>
+
+          {/* main content — Figma 50:3737; left col 500/1280 ≈ 39% */}
+          <div className="grid w-full gap-[clamp(1.5rem,2.78vw,2.5rem)] lg:grid-cols-[minmax(280px,39.0625%)_minmax(0,1fr)] lg:items-start">
+            <div className="relative flex flex-col">
+              {STEPS.map((step, index) => {
+                const stickyTop = STICKY_BASE + index * STICKY_STEP;
+                const coverDepth = Math.max(0, activeStep - index);
+                return (
+                  <div
+                    key={step.id}
+                    ref={(el) => {
+                      stepRefs.current[index] = el;
+                    }}
+                    className="sticky"
+                    style={{
+                      top: `clamp(0.75rem, ${stickyTop}px, 28vh)`,
+                      marginBottom: index === STEPS.length - 1 ? 0 : stackGap,
+                      zIndex: index + 1,
+                      paddingBottom: index === STEPS.length - 1 ? 0 : "1.5rem",
+                    }}
+                  >
+                    <StepCard
+                      step={step}
+                      index={index}
+                      isCovered={activeStep > index}
+                      coverDepth={coverDepth}
+                      compactPadding={compact}
+                      onSelect={() => scrollToStep(index)}
+                      onShop={() => {
                         shelfRef.current?.scrollIntoView({
                           behavior: "smooth",
                           block: "nearest",
                         });
-                      }
-                    }}
-                  />
-                </div>
-              );
-            })}
-          </div>
-
-          <aside
-            id="products-shelf"
-            ref={shelfRef}
-            className="sticky top-[4.5rem] hidden self-start overflow-hidden lg:block"
-            style={{
-              paddingBottom: `${Math.max(0, 8 - compact / 2)}px`,
-              maxHeight: "calc(100vh - 5.5rem)",
-            }}
-          >
-            <div className="flex flex-col gap-3 overflow-hidden">
-              <p className="text-base font-bold text-neutral-900">
-                {STEPS[activeStep]?.cta ?? "Shop cleansers"}
-              </p>
-              <CategoryTabs
-                categories={categories}
-                activeId={activeCategoryId}
-                onChange={setActiveCategoryId}
-              />
-              <div className="overflow-x-auto overflow-y-visible pb-2 scrollbar-hide">
-                <div className="flex w-max gap-3 pr-2">
-                  {filteredProducts.length ? (
-                    filteredProducts.map((p) => (
-                      <ProductCard key={p.documentId} product={p} />
-                    ))
-                  ) : (
-                    <p className="rounded-3xl bg-neutral-200 px-6 py-10 text-base font-medium text-neutral-800">
-                      No products in this category yet.
-                    </p>
-                  )}
-                </div>
-              </div>
+                      }}
+                    />
+                  </div>
+                );
+              })}
             </div>
-          </aside>
-        </div>
-      </div>
 
-      <AnimatePresence>
-        {overlayOpen ? (
-          <motion.div
-            className="fixed inset-0 z-50 lg:hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <button
-              type="button"
-              aria-label="Close products"
-              className="absolute inset-0 bg-white/85 backdrop-blur-sm"
-              onClick={closeOverlay}
-              tabIndex={-1}
-            />
-            <motion.div
-              ref={overlayRef}
-              role="dialog"
-              aria-modal="true"
-              aria-label="Products"
-              className="absolute inset-x-0 bottom-0 top-0 flex flex-col bg-white"
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 28, stiffness: 280 }}
+            <aside
+              id="products-shelf"
+              ref={shelfRef}
+              className="sticky top-[4.5rem] self-start overflow-visible"
+              style={{
+                paddingBottom: `${Math.max(0, 8 - compact / 2)}px`,
+                maxHeight: "calc(100vh - 5.5rem)",
+              }}
             >
-              <div className="flex items-center justify-between px-4 pt-6">
-                <h3 className="text-2xl font-bold text-neutral-900">
-                  {STEPS[overlayStep]?.cta}
-                </h3>
-                <button
-                  ref={closeBtnRef}
-                  type="button"
-                  aria-label="Close"
-                  onClick={closeOverlay}
-                  className="flex size-11 items-center justify-center rounded-full bg-neutral-200 text-2xl font-bold text-neutral-900"
-                >
-                  ×
-                </button>
-              </div>
-
-              <div className="mt-4 px-4">
+              <div className="flex flex-col gap-3 overflow-visible">
+                <p className="text-base font-bold leading-[1.1] text-neutral-900">
+                  {STEPS[activeStep]?.cta ?? "Shop cleansers"}
+                </p>
                 <CategoryTabs
                   categories={categories}
                   activeId={activeCategoryId}
                   onChange={setActiveCategoryId}
                 />
-              </div>
-
-              <div className="mt-4 flex-1 overflow-x-auto overflow-y-auto px-4 pb-28 scrollbar-hide">
-                <div className="flex w-max gap-3">
-                  {filteredProducts.length ? (
-                    filteredProducts.map((p) => (
-                      <ProductCard key={p.documentId} product={p} />
-                    ))
-                  ) : (
-                    <p className="py-10 text-base font-medium text-neutral-800">
-                      No products in this category yet.
-                    </p>
-                  )}
+                {/* products — Figma 50:3803 gap-12; padding keeps soft-shadow visible */}
+                <div className="-mx-2 overflow-x-auto overflow-y-visible px-2 pb-4 pt-3 scrollbar-hide">
+                  <div className="flex w-max items-stretch gap-3 pr-2">
+                    {filteredProducts.length ? (
+                      filteredProducts.map((p) => (
+                        <ProductCard key={p.documentId} product={p} />
+                      ))
+                    ) : (
+                      <p className="rounded-3xl bg-neutral-200 px-6 py-10 text-base font-medium text-neutral-800">
+                        No products in this category yet.
+                      </p>
+                    )}
+                  </div>
                 </div>
               </div>
+            </aside>
+          </div>
+        </div>
+      </div>
 
-              <div className="absolute inset-x-0 bottom-0 border-t border-neutral-200 bg-white px-2 py-2.5">
-                <div className="flex gap-1.5 overflow-x-auto scrollbar-hide">
-                  {STEPS.map((step, i) => (
-                    <button
-                      key={step.id}
-                      type="button"
-                      aria-current={overlayStep === i ? "true" : undefined}
-                      onClick={() => setOverlayStep(i)}
-                      className={cn(
-                        "shrink-0 rounded-full px-3 py-2.5 text-xs font-bold transition-colors",
-                        overlayStep === i
-                          ? "bg-neutral-900 text-white"
-                          : "bg-neutral-200 text-neutral-900",
-                      )}
-                    >
-                      <span className="tabular-nums">{step.number}</span>{" "}
-                      {step.title}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+      <ProductsOverlay
+        open={overlayOpen}
+        title={STEPS[overlayStep]?.cta ?? "Shop products"}
+        overlayStep={overlayStep}
+        categories={categories}
+        activeCategoryId={activeCategoryId}
+        products={filteredProducts}
+        onClose={closeOverlay}
+        onStepChange={setOverlayStep}
+        onCategoryChange={setActiveCategoryId}
+      />
     </section>
   );
 }
