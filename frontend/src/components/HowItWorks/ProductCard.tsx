@@ -16,9 +16,6 @@ type Props = {
   className?: string;
 };
 
-/**
- * Desktop product card — Figma 50:4093 (264px, card shadow S)
- */
 export function ProductCard({ product, className }: Props) {
   const price = resolvePrice(product);
   const image = mediaUrl(product.image);
@@ -198,7 +195,6 @@ export function ProductCard({ product, className }: Props) {
         </div>
       </article>
 
-      {/* Heart — Figma 50:4122: 44×44, icon 32 centered (no pad squeeze) */}
       <button
         type="button"
         aria-label={`Add ${product.title} to wishlist`}

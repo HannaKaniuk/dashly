@@ -8,11 +8,9 @@ export type StepDef = {
   image: string;
   imageAlt: string;
   accent: string;
-  /** Desktop 1440 card fill (Figma 50:3740+) */
   bg: string;
   border?: string;
   descColor?: string;
-  /** Mobile Figma assets / styles (1:11001) */
   mobileImage: string;
   mobileTitleSize: "40" | "36" | "50";
   mobileTitleWeight: "normal" | "bold";

@@ -5,7 +5,6 @@ import { cn } from "@/lib/cn";
 
 type Props = {
   className?: string;
-  /** Mobile Figma header: icons only, right-aligned, no logo */
   mobileOnlyIcons?: boolean;
 };
 

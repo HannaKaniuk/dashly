@@ -1,15 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { STEPS } from "@/data/steps";
 import type { Product, ProductCategory } from "@/lib/strapi";
 import { CategoryTabs } from "./CategoryTabs";
 import { ProductCard } from "./ProductCard";
 import { StepCard } from "./StepCard";
 import { MobileStepCard } from "./MobileStepCard";
-import { ProductsOverlay } from "./ProductsOverlay";
-import { cn } from "@/lib/cn";
 
 type Props = {
   products: Product[];
@@ -18,19 +15,20 @@ type Props = {
 
 const STICKY_BASE = 72;
 const STICKY_STEP = 16;
+const MOBILE_STICKY_BASE = 16;
+const MOBILE_STICKY_STEP = 20;
 
 export function HowItWorks({ products, categories }: Props) {
   const sectionRef = useRef<HTMLElement>(null);
   const shelfRef = useRef<HTMLElement>(null);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const mobileStepRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const [activeStep, setActiveStep] = useState(0);
   const [compact, setCompact] = useState(0);
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(
     categories[0]?.documentId ?? null,
   );
-  const [overlayOpen, setOverlayOpen] = useState(false);
-  const [overlayStep, setOverlayStep] = useState(0);
 
   useEffect(() => {
     if (!activeCategoryId && categories[0]) {
@@ -40,25 +38,30 @@ export function HowItWorks({ products, categories }: Props) {
 
   useEffect(() => {
     const onScroll = () => {
-      if (window.matchMedia("(max-width: 1023px)").matches) return;
+      const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+      const refs = isMobile ? mobileStepRefs.current : stepRefs.current;
+      const stickyBase = isMobile ? MOBILE_STICKY_BASE : STICKY_BASE;
+      const stickyStep = isMobile ? MOBILE_STICKY_STEP : STICKY_STEP;
+      const anchor = stickyBase + stickyStep + 8;
 
-      const anchor = STICKY_BASE + 24;
-      const offsets = stepRefs.current.map((el) => {
+      const offsets = refs.map((el) => {
         if (!el) return Number.POSITIVE_INFINITY;
         return Math.abs(el.getBoundingClientRect().top - anchor);
       });
       const nearest = offsets.indexOf(Math.min(...offsets));
       if (nearest >= 0) setActiveStep(nearest);
 
-      const first = stepRefs.current[0];
-      const last = stepRefs.current[STEPS.length - 1];
-      if (first && last) {
-        const span = Math.max(1, last.offsetTop - first.offsetTop);
-        const progress = Math.min(
-          1,
-          Math.max(0, (anchor - first.getBoundingClientRect().top) / span),
-        );
-        setCompact(progress * 18);
+      if (!isMobile) {
+        const first = stepRefs.current[0];
+        const last = stepRefs.current[STEPS.length - 1];
+        if (first && last) {
+          const span = Math.max(1, last.offsetTop - first.offsetTop);
+          const progress = Math.min(
+            1,
+            Math.max(0, (anchor - first.getBoundingClientRect().top) / span),
+          );
+          setCompact(progress * 18);
+        }
       }
     };
 
@@ -69,10 +72,6 @@ export function HowItWorks({ products, categories }: Props) {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, []);
-
-  const closeOverlay = useCallback(() => {
-    setOverlayOpen(false);
   }, []);
 
   const filteredProducts = useMemo(() => {
@@ -89,12 +88,15 @@ export function HowItWorks({ products, categories }: Props) {
     });
   };
 
-  const openOverlay = (index: number) => {
-    setOverlayStep(index);
-    setOverlayOpen(true);
+  const scrollToShelf = () => {
+    shelfRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    });
   };
 
   const stackGap = "clamp(7.5rem, 18vh, 16rem)";
+  const mobileStackGap = "clamp(5.5rem, 22vh, 11rem)";
 
   return (
     <section
@@ -103,7 +105,6 @@ export function HowItWorks({ products, categories }: Props) {
       className="relative w-full"
       aria-label="How it works"
     >
-      {/* ── Mobile — exact at 375 (px-3.5), fluid full-width up to lg ─ */}
       <div className="mx-auto flex w-full flex-col items-center px-[clamp(0.875rem,3.75vw,1.25rem)] pb-8 pt-[clamp(4rem,14vw,6.375rem)] lg:hidden">
         <div className="flex w-full flex-col items-center gap-10">
           <div className="flex w-full flex-col items-center gap-3">
@@ -129,41 +130,40 @@ export function HowItWorks({ products, categories }: Props) {
             </p>
           </div>
 
-          {/* Stacked cards — Figma overlap -290 at 375 */}
           <div className="relative flex w-full flex-col items-start">
-            {STEPS.map((step, index) => (
-              <motion.div
-                key={step.id}
-                className={cn(
-                  "relative w-full",
-                  index < STEPS.length - 1 && "mb-[-290px]",
-                )}
-                style={{ zIndex: index + 1 }}
-                initial={{ opacity: 0, y: 28 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.35 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 260,
-                  damping: 28,
-                  delay: index * 0.06,
-                }}
-              >
-                <MobileStepCard
-                  step={step}
-                  index={index}
-                  onShop={() => openOverlay(index)}
-                />
-              </motion.div>
-            ))}
+            {STEPS.map((step, index) => {
+              const stickyTop = MOBILE_STICKY_BASE + index * MOBILE_STICKY_STEP;
+              const coverDepth = Math.max(0, activeStep - index);
+              const isLast = index === STEPS.length - 1;
+              return (
+                <div
+                  key={step.id}
+                  ref={(el) => {
+                    mobileStepRefs.current[index] = el;
+                  }}
+                  className="sticky w-full"
+                  style={{
+                    top: stickyTop,
+                    marginBottom: mobileStackGap,
+                    zIndex: index + 1,
+                    paddingBottom: isLast ? 0 : "0.75rem",
+                  }}
+                >
+                  <MobileStepCard
+                    step={step}
+                    index={index}
+                    isCovered={activeStep > index}
+                    coverDepth={coverDepth}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
 
-      {/* ── Desktop — exact at 1440 (5.556vw → 80px / content 1280), fluid above */}
       <div className="relative hidden w-full pb-32 pt-[160px] lg:block">
         <div className="mx-auto flex w-[min(100%,88.8889%)] flex-col items-center gap-[clamp(3rem,6vw,5rem)] px-4 lg:px-0">
-          {/* Title group — Figma 50:3725; 661/1440 ≈ 45.9vw */}
           <div className="card-shadow flex w-full max-w-[45.9vw] flex-col items-center gap-3 rounded-[200px] bg-gradient-to-b from-[#f3f5f5] from-[11.5%] to-[#f5fcfd] to-[104.6%] px-[clamp(2rem,11vw,12rem)] py-7 text-center">
             <h2 className="flex items-center gap-1.5 text-[clamp(1.75rem,3vw,2.375rem)] font-bold leading-none text-neutral-900">
               How it
@@ -187,7 +187,6 @@ export function HowItWorks({ products, categories }: Props) {
             </p>
           </div>
 
-          {/* main content — Figma 50:3737; left col 500/1280 ≈ 39% */}
           <div className="grid w-full gap-[clamp(1.5rem,2.78vw,2.5rem)] lg:grid-cols-[minmax(280px,39.0625%)_minmax(0,1fr)] lg:items-start">
             <div className="relative flex flex-col">
               {STEPS.map((step, index) => {
@@ -214,12 +213,7 @@ export function HowItWorks({ products, categories }: Props) {
                       coverDepth={coverDepth}
                       compactPadding={compact}
                       onSelect={() => scrollToStep(index)}
-                      onShop={() => {
-                        shelfRef.current?.scrollIntoView({
-                          behavior: "smooth",
-                          block: "nearest",
-                        });
-                      }}
+                      onShop={scrollToShelf}
                     />
                   </div>
                 );
@@ -235,7 +229,7 @@ export function HowItWorks({ products, categories }: Props) {
                 maxHeight: "calc(100vh - 5.5rem)",
               }}
             >
-              <div className="flex flex-col gap-3 overflow-visible">
+              <div className="flex w-full flex-col items-start gap-3 overflow-visible">
                 <p className="text-base font-bold leading-[1.1] text-neutral-900">
                   {STEPS[activeStep]?.cta ?? "Shop cleansers"}
                 </p>
@@ -244,8 +238,7 @@ export function HowItWorks({ products, categories }: Props) {
                   activeId={activeCategoryId}
                   onChange={setActiveCategoryId}
                 />
-                {/* products — Figma 50:3803 gap-12; padding keeps soft-shadow visible */}
-                <div className="-mx-2 overflow-x-auto overflow-y-visible px-2 pb-4 pt-3 scrollbar-hide">
+                <div className="-mx-2 w-[calc(100%+1rem)] overflow-x-auto overflow-y-visible p-4 scrollbar-hide">
                   <div className="flex w-max items-stretch gap-3 pr-2">
                     {filteredProducts.length ? (
                       filteredProducts.map((p) => (
@@ -263,18 +256,6 @@ export function HowItWorks({ products, categories }: Props) {
           </div>
         </div>
       </div>
-
-      <ProductsOverlay
-        open={overlayOpen}
-        title={STEPS[overlayStep]?.cta ?? "Shop products"}
-        overlayStep={overlayStep}
-        categories={categories}
-        activeCategoryId={activeCategoryId}
-        products={filteredProducts}
-        onClose={closeOverlay}
-        onStepChange={setOverlayStep}
-        onCategoryChange={setActiveCategoryId}
-      />
     </section>
   );
 }

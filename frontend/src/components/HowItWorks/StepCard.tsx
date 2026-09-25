@@ -14,9 +14,6 @@ type Props = {
   compactPadding: number;
 };
 
-/**
- * Desktop step card — Figma 50:3740 / 50:3752 / 50:3765 / 50:3778 (1440)
- */
 export function StepCard({
   step,
   index,

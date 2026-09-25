@@ -14,10 +14,6 @@ type Props = {
   className?: string;
 };
 
-/**
- * Mobile XS product card — Figma 52:4859 (160px)
- * Collapsed shop-popup state: no variation pickers.
- */
 export function ProductCardXS({ product, className }: Props) {
   const price = resolvePrice(product);
   const image = mediaUrl(product.image);
@@ -109,7 +105,6 @@ export function ProductCardXS({ product, className }: Props) {
         ) : null}
       </article>
 
-      {/* Heart — Figma 52:4911, outside overflow-clip; top = pt(4)+img(150.204)-size(32.727) */}
       <button
         type="button"
         aria-label={`Add ${product.title} to wishlist`}
