@@ -10,19 +10,13 @@ import {
 import { cn } from "@/lib/cn";
 
 type Props = {
-  /** Figma artboard width (exact at this size) */
   width: number;
-  /** Figma artboard height — used for layout spacer after scale */
   height: number;
   className?: string;
   style?: CSSProperties;
   children: ReactNode;
 };
 
-/**
- * Scales a fixed Figma artboard to the container width.
- * At `width` px → scale 1 (pixel-perfect). Between breakpoints → fluid.
- */
 export function DesignFrame({
   width,
   height,

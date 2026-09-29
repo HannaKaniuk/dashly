@@ -1,5 +1,5 @@
-import { Hero } from "@/components/Hero";
-import { HowItWorks } from "@/components/HowItWorks/HowItWorks";
+import { Hero } from "@/components/hero/Hero";
+import { HowItWorks } from "@/components/how-it-works/HowItWorks";
 import {
   getAnnouncements,
   getCategories,

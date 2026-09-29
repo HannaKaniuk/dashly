@@ -19,7 +19,6 @@
   --brand-500: #63cc96;
   --brand-900: #1b3829;
   --pink-150: #ffe3f1;
-  /* Figma "card shadow S" */
   --soft-shadow:
     -12px -8px 16px 0px rgba(154, 173, 167, 0.16),
     13px 40px 12px 0px rgba(156, 182, 186, 0),
@@ -34,7 +33,6 @@
     12px 20px 8px 0px rgba(156, 182, 186, 0.09),
     -8px 12px 6px 0px rgba(156, 182, 186, 0.09),
     1px 2px 2px 0px rgba(156, 182, 186, 0.08);
-  /* Figma mobile step cards (375) */
   --mobile-step-shadow:
     0px -12px 12px 0px rgba(154, 173, 167, 0.2),
     -20px 40px 30px 0px rgba(156, 182, 186, 0.06),
@@ -42,7 +40,6 @@
     12px 20px 16px 0px rgba(156, 182, 186, 0.09),
     -8px 12px 12px 0px rgba(156, 182, 186, 0.09),
     1px 2px 4px 0px rgba(156, 182, 186, 0.08);
-  /* Figma "card shadow M" — step cards + opened menus plate */
   --step-card-shadow:
     -12px -40px 30px 0px rgba(156, 182, 186, 0.1),
     -20px 40px 30px 0px rgba(156, 182, 186, 0.06),
@@ -50,15 +47,6 @@
     12px 20px 16px 0px rgba(156, 182, 186, 0.09),
     -8px 12px 12px 0px rgba(156, 182, 186, 0.09),
     1px 2px 4px 0px rgba(156, 182, 186, 0.08);
-  /* Figma "card shadow XL" — category menu pill (exact export order) */
-  --menu-shadow-xl:
-    -12px -40px 15px 0px rgba(156, 182, 186, 0.1),
-    -20px 40px 15px 0px rgba(156, 182, 186, 0.06),
-    8px 26px 7px 0px rgba(156, 182, 186, 0.09),
-    12px 20px 8px 0px rgba(156, 182, 186, 0.09),
-    -8px 12px 6px 0px rgba(156, 182, 186, 0.09),
-    1px 2px 2px 0px rgba(156, 182, 186, 0.08);
-
   --heart-shadow:
     -8.251px -27.502px 10.313px 0px rgba(156, 182, 186, 0.1),
     -13.751px 27.502px 10.313px 0px rgba(156, 182, 186, 0.06),
@@ -149,95 +137,17 @@ button:disabled,
   box-shadow: var(--mobile-step-shadow);
 }
 
-.menu-shadow-xl {
-  box-shadow: var(--menu-shadow-xl);
-}
-
-/* Figma mobile shop modal — category pill */
-.menu-shadow-popup {
-  box-shadow:
-    0px -20px 20px 0px rgba(94, 123, 113, 0.12),
-    -172px 205px 75px 0px rgba(94, 123, 113, 0),
-    -110px 131px 69px 0px rgba(94, 123, 113, 0.01),
-    -62px 74px 58px 0px rgba(94, 123, 113, 0.05),
-    -28px 33px 43px 0px rgba(94, 123, 113, 0.09),
-    -7px 8px 24px 0px rgba(94, 123, 113, 0.1);
-}
-
 .heart-shadow {
   box-shadow: var(--heart-shadow);
-}
-
-/*
- * Soft ambient underlays — mimic Figma XL/S shadows without overflow clipping.
- * Teal-grey haze matching rgba(94,123,113) / rgba(156,182,186).
- */
-.menu-glow {
-  pointer-events: none;
-  position: absolute;
-  left: -4%;
-  right: 0;
-  top: 50%;
-  z-index: 0;
-  height: 140px;
-  transform: translateY(-48%);
-  background:
-    radial-gradient(
-      ellipse 55% 50% at 28% 48%,
-      rgba(94, 123, 113, 0.2) 0%,
-      rgba(94, 123, 113, 0.08) 35%,
-      transparent 68%
-    ),
-    radial-gradient(
-      ellipse 85% 65% at 45% 58%,
-      rgba(94, 123, 113, 0.12) 0%,
-      transparent 70%
-    ),
-    radial-gradient(
-      ellipse 100% 80% at 50% 50%,
-      rgba(156, 182, 186, 0.1) 0%,
-      transparent 72%
-    );
-  filter: blur(10px);
-}
-
-.products-glow {
-  pointer-events: none;
-  position: absolute;
-  inset: -8px -4% 0 -2%;
-  z-index: 0;
-  background:
-    radial-gradient(
-      ellipse 50% 40% at 22% 35%,
-      rgba(94, 123, 113, 0.14) 0%,
-      transparent 65%
-    ),
-    radial-gradient(
-      ellipse 55% 45% at 55% 40%,
-      rgba(94, 123, 113, 0.1) 0%,
-      transparent 68%
-    ),
-    radial-gradient(
-      ellipse 90% 70% at 40% 55%,
-      rgba(156, 182, 186, 0.09) 0%,
-      transparent 70%
-    );
-  filter: blur(14px);
 }
 
 .font-caveat {
   font-family: var(--font-caveat-family), cursive;
 }
 
-/*
- * Figma button hover (component set 1:35) — SMART_ANIMATE 0.4s ease-in-out.
- * “vibrant grad” = concentric rounded squares parked below/right of the clip;
- * on hover they scale ~4–5× and cover the button from bottom-right.
- */
 .cta-rings {
   pointer-events: none;
   position: absolute;
-  /* Default: just below bottom-right edge (Figma y ≈ button height) */
   right: -8%;
   top: 100%;
   width: 70%;
@@ -254,7 +164,6 @@ button:disabled,
   border-radius: 9999px;
 }
 
-/* Outer → inner nest (percent of parent) */
 .cta-ring--1 {
   inset: 0;
 }
@@ -268,7 +177,6 @@ button:disabled,
   inset: 28.4%;
 }
 
-/* Dark CTA — brand greens (1:36 → 1:62) */
 .cta-rings--brand .cta-ring--1 {
   background: var(--brand-100);
 }
@@ -282,7 +190,6 @@ button:disabled,
   background: var(--brand-500);
 }
 
-/* Mint / green CTA — “vibrant grad black” (1:106 → 1:136) */
 .cta-rings--dark .cta-ring--1 {
   background: var(--neutral-250);
 }
@@ -296,7 +203,6 @@ button:disabled,
   background: var(--neutral-900);
 }
 
-/* Light CTA — single muted radial (1:86 → 1:163) */
 .cta-rings--muted .cta-ring--1 {
   background: radial-gradient(
     circle at 50% 50%,
@@ -322,74 +228,14 @@ button:disabled,
 
 .group\/cta:hover .cta-rings,
 .group\/cta:focus-visible .cta-rings {
-  /* Hover: expand over the pill (matches Figma scale ~4.5× + lift) */
   transform: translate(-35%, -78%) scale(4.6);
 }
 
 .group\/cta:hover .cta-rings--muted,
 .group\/cta:focus-visible .cta-rings--muted {
-  /* Light hover moves less aggressively (1:163 y:-95 on 52px btn) */
   transform: translate(-20%, -72%) scale(2.2);
 }
 
-/* Legacy class kept for non-Button CTAs (mobile overlay, etc.) */
-.cta-gradient {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 100%;
-  height: 220%;
-  pointer-events: none;
-  transition: transform 0.4s ease-in-out;
-  background: radial-gradient(
-    circle at 50% 80%,
-    var(--brand-500) 0%,
-    var(--brand-400) 28%,
-    var(--brand-200) 55%,
-    transparent 72%
-  );
-}
-
-.cta-gradient--muted {
-  background: radial-gradient(
-    circle at 50% 80%,
-    #bcd1c7 0%,
-    #d9e1e2 40%,
-    transparent 70%
-  );
-}
-
-.cta-gradient--dark {
-  background: radial-gradient(
-    circle at 50% 80%,
-    #2a2f2c 0%,
-    #3a403c 35%,
-    #505050 55%,
-    #e3e8e9 75%,
-    transparent 85%
-  );
-}
-
-.cta-gradient--ghost {
-  background: radial-gradient(
-    circle at 50% 80%,
-    var(--brand-400) 0%,
-    var(--brand-200) 40%,
-    transparent 68%
-  );
-  opacity: 0.85;
-}
-
-.group\/cta:hover .cta-gradient,
-.group\/cta:focus-visible .cta-gradient {
-  transform: translateY(-55%);
-}
-
-/*
- * Ternary / underline CTA hover — Figma 1:168 → 1:173
- * Default: 1px bottom #212721
- * Hover: 2px bottom brand-500, text stays neutral-900 (0.4s ease-out)
- */
 .cta-underline {
   border-bottom-width: 1px;
   border-bottom-style: solid;

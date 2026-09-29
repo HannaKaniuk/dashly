@@ -1,6 +1,7 @@
 "use client";
 
 import type { StepDef } from "@/data/steps";
+import { Asset } from "@/components/ui/Asset";
 import { cn } from "@/lib/cn";
 
 type Props = {
@@ -74,8 +75,8 @@ export function MobileStepCard({
                 <div className="relative h-12 w-[100px] shrink-0 overflow-hidden">
                   <span
                     className={cn(
-                      "absolute -translate-x-1/2 -translate-y-1/2 text-center text-[91.429px] font-medium leading-none tracking-[-1.8286px] text-neutral-600",
-                      isCleanse && "left-[calc(50%-2.5px)] top-[32.93px]",
+                      "absolute -translate-x-1/2 -translate-y-1/2 text-center text-[92px] font-medium leading-none tracking-[-2px] text-neutral-600",
+                      isCleanse && "left-[calc(50%-2.5px)] top-[33px]",
                       (isTreat || isMoisturise) &&
                         "left-[calc(50%+0.5px)] top-[32.5px]",
                       isProtect && "left-1/2 top-[32.5px]",
@@ -127,10 +128,8 @@ export function MobileStepCard({
             className="inline-flex h-[23px] w-fit items-center gap-2 self-start whitespace-nowrap border-0 bg-transparent p-0 text-[18px] font-normal leading-[23px] text-neutral-900"
           >
             {isProtect ? `${step.cta} ` : step.cta}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Asset
               src="/icons/mobile/arrow-down-dark.svg"
-              alt=""
               width={20}
               height={20}
               className="size-5 shrink-0"
@@ -138,44 +137,40 @@ export function MobileStepCard({
           </button>
 
           {isProtect ? (
-            <div className="relative h-[92.041px] w-[185.612px] shrink-0 overflow-hidden rounded-[30px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+            <div className="relative h-[92px] w-[186px] shrink-0 overflow-hidden rounded-[30px]">
+              <Asset
                 alt={step.imageAlt}
                 src={step.mobileImage}
-                className="pointer-events-none absolute left-0 top-[-101.23%] h-[302.46%] w-full max-w-none"
+                className="pointer-events-none absolute left-0 top-[-101%] h-[302%] w-full max-w-none"
               />
             </div>
           ) : null}
         </div>
 
         {isCleanse ? (
-          <div className="absolute bottom-0 right-0 h-[110px] w-[300px] overflow-hidden rounded-[13.333px]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+          <div className="absolute bottom-0 right-0 h-[110px] w-[300px] overflow-hidden rounded-[13px]">
+            <Asset
               alt={step.imageAlt}
               src={step.mobileImage}
-              className="pointer-events-none absolute left-[0.02%] top-[-60.55%] h-[222.19%] w-[99.98%] max-w-none"
+              className="pointer-events-none absolute left-[0.02%] top-[-60.55%] h-[222.19%] w-[100%] max-w-none"
             />
           </div>
         ) : null}
 
         {isTreat ? (
-          <div className="absolute bottom-0 right-0 h-[110px] w-[300px] overflow-hidden rounded-[17.712px]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+          <div className="absolute bottom-0 right-0 h-[110px] w-[300px] overflow-hidden rounded-[18px]">
+            <Asset
               alt={step.imageAlt}
               src={step.mobileImage}
-              className="pointer-events-none absolute left-0 top-[-69.34%] h-[272.73%] w-full max-w-none"
+              className="pointer-events-none absolute left-0 top-[-69%] h-[273%] w-full max-w-none"
             />
           </div>
         ) : null}
 
         {isMoisturise ? (
           <div className="absolute bottom-0 right-0 h-[210px] w-[300px] overflow-hidden">
-            <div className="absolute left-[171.05px] top-[34.51px] h-[156.964px] w-[104.771px] overflow-hidden rounded-[30px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+            <div className="absolute left-[171px] top-[35px] h-[157px] w-[105px] overflow-hidden rounded-[30px]">
+              <Asset
                 alt={step.imageAlt}
                 src={step.mobileImage}
                 className="pointer-events-none absolute inset-0 size-full max-w-none rounded-[30px] object-cover"

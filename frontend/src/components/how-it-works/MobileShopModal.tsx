@@ -4,6 +4,7 @@ import { useEffect, useId, useRef } from "react";
 import { STEPS } from "@/data/steps";
 import { cn } from "@/lib/cn";
 import type { Product, ProductCategory } from "@/lib/strapi";
+import { Asset } from "@/components/ui/Asset";
 import { CategoryTabs } from "./CategoryTabs";
 import { ProductCardXS } from "./ProductCardXS";
 
@@ -68,10 +69,8 @@ export function MobileShopModal({
           aria-label="Close"
           className="absolute right-5 top-5 z-10 size-8 border-0 bg-transparent p-0"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Asset
             src="/icons/mobile/close.svg"
-            alt=""
             width={32}
             height={32}
             className="size-8"
@@ -130,7 +129,7 @@ export function MobileShopModal({
                 >
                   <span className="flex items-end gap-2.5">
                     <span className="relative h-5 w-[41.667px] shrink-0 overflow-hidden">
-                      <span className="absolute left-1/2 top-[13.76px] -translate-x-1/2 -translate-y-1/2 text-[38.095px] font-medium leading-none tracking-[-0.7619px] text-neutral-600">
+                      <span className="absolute left-1/2 top-[14px] -translate-x-1/2 -translate-y-1/2 text-[38px] font-medium leading-none tracking-[-1px] text-neutral-600">
                         {item.number}
                       </span>
                     </span>

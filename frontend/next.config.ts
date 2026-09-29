@@ -8,7 +8,7 @@ let strapiHost = "127.0.0.1";
 try {
   strapiHost = new URL(strapiUrl).hostname;
 } catch {
-  /* keep default */
+  strapiHost = "127.0.0.1";
 }
 
 const nextConfig: NextConfig = {

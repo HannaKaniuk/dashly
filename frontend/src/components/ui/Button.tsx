@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/cn";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { Asset } from "./Asset";
 
 type ButtonVariant = "dark" | "light" | "mint" | "ghost";
 type ButtonSize = "lg" | "md" | "sm" | "link";
@@ -24,12 +25,10 @@ const sizeClasses: Record<ButtonSize, string> = {
 const variantClasses: Record<ButtonVariant, string> = {
   dark: "bg-neutral-900 text-white",
   light: "bg-neutral-200 text-neutral-900 hover:text-brand-900",
-  /* Figma green + “black hover” overlay (1:106 → 1:136) */
   mint: "bg-brand-500 text-white",
   ghost: "bg-transparent text-neutral-900",
 };
 
-/** Concentric rings — Figma “vibrant grad” / “vibrant grad black” */
 function CtaRings({ variant }: { variant: ButtonVariant }) {
   if (variant === "ghost") {
     return (
@@ -48,7 +47,6 @@ function CtaRings({ variant }: { variant: ButtonVariant }) {
   }
 
   if (variant === "mint") {
-    /* vibrant grad black — e3e8e9 → 858585 → 505050 → 212721 */
     return (
       <span className="cta-rings cta-rings--dark" aria-hidden>
         <span className="cta-ring cta-ring--1" />
@@ -59,7 +57,6 @@ function CtaRings({ variant }: { variant: ButtonVariant }) {
     );
   }
 
-  /* dark button — brand greens rise in (1:36 → 1:62) */
   return (
     <span className="cta-rings cta-rings--brand" aria-hidden>
       <span className="cta-ring cta-ring--1" />
@@ -91,14 +88,7 @@ function ArrowUpRight({ className }: { className?: string }) {
 
 function ArrowDown() {
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src="/icons/arrow-down.svg"
-      alt=""
-      width={20}
-      height={20}
-      className="shrink-0"
-    />
+    <Asset src="/icons/arrow-down.svg" width={20} height={20} className="shrink-0" />
   );
 }
 

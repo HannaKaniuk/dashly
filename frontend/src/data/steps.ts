@@ -7,7 +7,6 @@ export type StepDef = {
   cta: string;
   image: string;
   imageAlt: string;
-  accent: string;
   bg: string;
   border?: string;
   descColor?: string;
@@ -31,7 +30,6 @@ export const STEPS: StepDef[] = [
     cta: "Shop cleansers",
     image: "/images/steps/cleanse.jpg",
     imageAlt: "Hands cleansing skin with a cotton pad",
-    accent: "#63cc96",
     bg: "#f3f5f5",
     border: "#f3f5f5",
     descColor: "#858585",
@@ -53,7 +51,6 @@ export const STEPS: StepDef[] = [
     cta: "Shop treatments",
     image: "/images/steps/treat.jpg",
     imageAlt: "Skincare bottles and serum dropper",
-    accent: "#63cc96",
     bg: "linear-gradient(141.34deg, #e5f7ed 1.43%, #92dbb6 100.66%)",
     border: "#f3f5f5",
     descColor: "#858585",
@@ -76,7 +73,6 @@ export const STEPS: StepDef[] = [
     cta: "Shop moisturisers",
     image: "/images/steps/moisturise.jpg",
     imageAlt: "Woman applying moisturiser",
-    accent: "#63cc96",
     bg: "#f3f5f5",
     border: "#f3f5f5",
     descColor: "#858585",
@@ -98,7 +94,6 @@ export const STEPS: StepDef[] = [
     cta: "Shop SPF",
     image: "/images/steps/protect.jpg",
     imageAlt: "Woman applying SPF cream",
-    accent: "#63cc96",
     bg: "radial-gradient(ellipse 68% 70% at 47% 87%, rgba(254,203,228,0.55) 0%, rgba(236,163,179,0.4) 36%, rgba(217,122,129,0.18) 55%, transparent 72%), #ffffff",
     border: "#f3f5f5",
     descColor: "#565b5a",
@@ -110,11 +105,4 @@ export const STEPS: StepDef[] = [
     mobileBorder: "#f3f5f5",
     mobileBgCss: "#ffe3f1",
   },
-];
-
-export const NAV_LINKS = [
-  { label: "Shop", href: "#how-it-works" },
-  { label: "Skincare", href: "#how-it-works" },
-  { label: "Sets", href: "#how-it-works" },
-  { label: "About", href: "#" },
 ];

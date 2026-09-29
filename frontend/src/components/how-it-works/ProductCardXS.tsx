@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Asset } from "@/components/ui/Asset";
 import { formatGBP, mediaUrl, resolvePrice, type Product } from "@/lib/strapi";
 import { cn } from "@/lib/cn";
 
@@ -72,10 +73,8 @@ export function ProductCardXS({ product, className }: Props) {
                 </span>
                 <span className="relative z-10 inline-flex shrink-0 items-center gap-2 whitespace-nowrap">
                   Add to bag
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Asset
                     src="/icons/mobile/arrow-down-white.svg"
-                    alt=""
                     width={22}
                     height={22}
                     className="size-[22px] shrink-0"
@@ -103,15 +102,13 @@ export function ProductCardXS({ product, className }: Props) {
       <button
         type="button"
         aria-label={`Add ${product.title} to wishlist`}
-        className="heart-shadow absolute right-[7.27px] top-[121.48px] z-10 flex size-[32.727px] items-center justify-center rounded-full bg-neutral-200 p-[6.875px]"
+        className="heart-shadow absolute right-[7px] top-[122px] z-10 flex size-[33px] items-center justify-center rounded-full bg-neutral-200 p-[7px]"
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Asset
           src="/icons/mobile/heart-product.svg"
-          alt=""
           width={20}
           height={20}
-          className="size-[19.636px]"
+          className="size-[20px]"
         />
       </button>
     </div>
