@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 const TEST_ADMIN = {
-  email: 'test@lumea.dev',
+  email: 'test@example.com',
   password: 'LumeaTest123!',
   firstname: 'Lumea',
   lastname: 'Tester',

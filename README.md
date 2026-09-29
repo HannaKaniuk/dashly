@@ -11,7 +11,7 @@ Home Page fragment (Hero + How it works) — **Next.js 15**, **Strapi 5**, **Pos
 | Frontend URL | _(Vercel URL)_ |
 | GitHub repo | _(repo URL)_ |
 | Strapi Admin | `https://<your-strapi>/admin` |
-| Admin email | `test@lumea.dev` |
+| Admin email | `test@example.com` |
 | Admin password | `LumeaTest123!` |
 | This README | локальный запуск ниже |
 
@@ -55,7 +55,7 @@ npm run develop
 Seeds: announcements, categories, 5 products (both pricing modes), Public permissions, test admin.
 
 - Admin: http://localhost:1337/admin  
-- Email: `test@lumea.dev`  
+- Email: `test@example.com`  
 - Password: `LumeaTest123!`
 
 ### 3. Frontend

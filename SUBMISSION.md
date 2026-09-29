@@ -25,7 +25,7 @@ git push -u origin main
 Admin (seeded on first empty DB bootstrap):
 
 - URL: `https://<strapi-service>.onrender.com/admin`
-- Email: `test@lumea.dev`
+- Email: `test@example.com`
 - Password: `LumeaTest123!`
 
 If login fails (admin was created differently), reset via Render shell or create a new admin on first `/admin` visit.
@@ -43,7 +43,7 @@ If login fails (admin was created differently), reset via Render shell or create
 
 1. Frontend URL  
 2. GitHub URL  
-3. Strapi Admin URL + `test@lumea.dev` / `LumeaTest123!`  
+3. Strapi Admin URL + `test@example.com` / `LumeaTest123!`  
 4. Point to README for local run  
 
 ## Local verify before push
