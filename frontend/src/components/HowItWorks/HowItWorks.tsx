@@ -18,6 +18,24 @@ const STICKY_STEP = 16;
 const MOBILE_STICKY_BASE = 16;
 const MOBILE_STICKY_STEP = 20;
 
+function stickyLayoutTop(el: HTMLElement) {
+  const previous = el.style.position;
+  el.style.position = "relative";
+  const top = el.getBoundingClientRect().top + window.scrollY;
+  el.style.position = previous;
+  return top;
+}
+
+function stuckStepIndex(refs: (HTMLElement | null)[]) {
+  let active = 0;
+  refs.forEach((el, index) => {
+    if (!el) return;
+    const stick = parseFloat(getComputedStyle(el).top) || 0;
+    if (el.getBoundingClientRect().top <= stick + 1) active = index;
+  });
+  return active;
+}
+
 export function HowItWorks({ products, categories }: Props) {
   const sectionRef = useRef<HTMLElement>(null);
   const shelfRef = useRef<HTMLElement>(null);
@@ -25,6 +43,9 @@ export function HowItWorks({ products, categories }: Props) {
   const mobileStepRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const [activeStep, setActiveStep] = useState(0);
+  const [shopStep, setShopStep] = useState(0);
+  const scrolledStepRef = useRef(0);
+  const shopPinRef = useRef<number | null>(null);
   const [compact, setCompact] = useState(0);
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(
     categories[0]?.documentId ?? null,
@@ -43,13 +64,19 @@ export function HowItWorks({ products, categories }: Props) {
       const stickyBase = isMobile ? MOBILE_STICKY_BASE : STICKY_BASE;
       const stickyStep = isMobile ? MOBILE_STICKY_STEP : STICKY_STEP;
       const anchor = stickyBase + stickyStep + 8;
-
-      const offsets = refs.map((el) => {
-        if (!el) return Number.POSITIVE_INFINITY;
-        return Math.abs(el.getBoundingClientRect().top - anchor);
-      });
-      const nearest = offsets.indexOf(Math.min(...offsets));
-      if (nearest >= 0) setActiveStep(nearest);
+      const nearest = stuckStepIndex(refs);
+      if (nearest >= 0) {
+        setActiveStep(nearest);
+        if (shopPinRef.current === null) {
+          if (nearest !== scrolledStepRef.current) {
+            scrolledStepRef.current = nearest;
+            setShopStep(nearest);
+          }
+        } else if (nearest === shopPinRef.current) {
+          shopPinRef.current = null;
+          scrolledStepRef.current = nearest;
+        }
+      }
 
       if (!isMobile) {
         const first = stepRefs.current[0];
@@ -65,11 +92,17 @@ export function HowItWorks({ products, categories }: Props) {
       }
     };
 
+    const onScrollEnd = () => {
+      shopPinRef.current = null;
+    };
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scrollend", onScrollEnd);
     window.addEventListener("resize", onScroll);
     return () => {
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("scrollend", onScrollEnd);
       window.removeEventListener("resize", onScroll);
     };
   }, []);
@@ -82,17 +115,18 @@ export function HowItWorks({ products, categories }: Props) {
   }, [products, activeCategoryId]);
 
   const scrollToStep = (index: number) => {
-    stepRefs.current[index]?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+    const el = stepRefs.current[index];
+    if (!el) return;
+    const stick = parseFloat(getComputedStyle(el).top) || 0;
+    const top = Math.max(0, stickyLayoutTop(el) - stick);
+    window.scrollTo({ top, behavior: "smooth" });
   };
 
-  const scrollToShelf = () => {
-    shelfRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "nearest",
-    });
+  const shopFromStep = (index: number) => {
+    shopPinRef.current = index;
+    scrolledStepRef.current = index;
+    setShopStep(index);
+    scrollToStep(index);
   };
 
   const stackGap = "clamp(7.5rem, 18vh, 16rem)";
@@ -105,10 +139,10 @@ export function HowItWorks({ products, categories }: Props) {
       className="relative w-full"
       aria-label="How it works"
     >
-      <div className="mx-auto flex w-full flex-col items-center px-[clamp(0.875rem,3.75vw,1.25rem)] pb-8 pt-[clamp(4rem,14vw,6.375rem)] lg:hidden">
+      <div className="mx-auto flex w-full flex-col items-center px-3.5 pb-[35px] pt-[137px] lg:hidden">
         <div className="flex w-full flex-col items-center gap-10">
           <div className="flex w-full flex-col items-center gap-3">
-            <h2 className="flex items-center gap-1.5 text-[clamp(1.5rem,8vw,1.875rem)] font-normal leading-none text-neutral-900">
+            <h2 className="flex items-center gap-1.5 text-[30px] font-normal leading-none text-neutral-900">
               How it
               <span
                 className="relative inline-flex size-8 shrink-0"
@@ -213,11 +247,12 @@ export function HowItWorks({ products, categories }: Props) {
                       coverDepth={coverDepth}
                       compactPadding={compact}
                       onSelect={() => scrollToStep(index)}
-                      onShop={scrollToShelf}
+                      onShop={() => shopFromStep(index)}
                     />
                   </div>
                 );
               })}
+              <div className="h-16 w-full shrink-0" aria-hidden />
             </div>
 
             <aside
@@ -231,7 +266,7 @@ export function HowItWorks({ products, categories }: Props) {
             >
               <div className="flex w-full flex-col items-start gap-3 overflow-visible">
                 <p className="text-base font-bold leading-[1.1] text-neutral-900">
-                  {STEPS[activeStep]?.cta ?? "Shop cleansers"}
+                  {STEPS[shopStep]?.cta ?? "Shop cleansers"}
                 </p>
                 <CategoryTabs
                   categories={categories}

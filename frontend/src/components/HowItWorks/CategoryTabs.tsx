@@ -41,10 +41,10 @@ export function CategoryTabs({
                   : "bg-transparent font-normal text-neutral-900",
               )
             : cn(
-                "px-8 py-6 text-[18px] font-bold tracking-[-0.36px]",
+                "text-[18px] font-bold",
                 active
-                  ? "soft-shadow bg-neutral-900 text-[#fcfcfc]"
-                  : "bg-transparent text-neutral-900 hover:text-accents-teal",
+                  ? "soft-shadow bg-neutral-900 px-8 py-6 leading-[1.1] tracking-[-0.36px] text-[#fcfcfc]"
+                  : "bg-transparent px-8 leading-[1.3] text-neutral-900 hover:text-accents-teal",
               ),
         )}
       >

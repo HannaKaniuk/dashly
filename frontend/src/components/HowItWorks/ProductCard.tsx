@@ -32,8 +32,8 @@ export function ProductCard({ product, className }: Props) {
 
   return (
     <div className={cn("relative flex w-[264px] shrink-0 self-stretch", className)}>
-      <article className="soft-shadow flex h-full w-[264px] flex-col gap-4 rounded-[12px] border border-[#f3f5f5] bg-white p-2">
-        <div className="relative aspect-square w-full shrink-0 overflow-hidden rounded-[12px] bg-neutral-200">
+      <article className="soft-shadow flex h-full w-[264px] flex-col gap-4 rounded-[12px] bg-white p-2 outline outline-1 -outline-offset-1 outline-[#f3f5f5]">
+        <div className="relative h-[248px] w-full shrink-0 overflow-hidden rounded-[12px] bg-neutral-200">
           {image ? (
             <Image
               src={image}
@@ -45,7 +45,7 @@ export function ProductCard({ product, className }: Props) {
           ) : null}
 
           {badges.length > 0 ? (
-            <div className="absolute left-[3px] top-[3px] z-10 flex flex-wrap gap-1.5">
+            <div className="absolute left-1 top-1 z-10 flex flex-wrap gap-1.5">
               {badges.map((badge) => (
                 <span
                   key={badge}
@@ -198,7 +198,7 @@ export function ProductCard({ product, className }: Props) {
       <button
         type="button"
         aria-label={`Add ${product.title} to wishlist`}
-        className="card-shadow absolute right-[15px] top-[204px] z-10 flex size-11 shrink-0 items-center justify-center rounded-full bg-neutral-200 transition-colors duration-300 hover:bg-white hover:text-accents-teal"
+        className="card-shadow absolute right-4 top-[204px] z-10 flex size-11 shrink-0 items-center justify-center rounded-full bg-neutral-200 transition-colors duration-300 hover:bg-white hover:text-accents-teal"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img

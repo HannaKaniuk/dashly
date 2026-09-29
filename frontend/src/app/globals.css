@@ -34,6 +34,14 @@
     12px 20px 8px 0px rgba(156, 182, 186, 0.09),
     -8px 12px 6px 0px rgba(156, 182, 186, 0.09),
     1px 2px 2px 0px rgba(156, 182, 186, 0.08);
+  /* Figma mobile step cards (375) */
+  --mobile-step-shadow:
+    0px -12px 12px 0px rgba(154, 173, 167, 0.2),
+    -20px 40px 30px 0px rgba(156, 182, 186, 0.06),
+    8px 26px 14px 0px rgba(156, 182, 186, 0.09),
+    12px 20px 16px 0px rgba(156, 182, 186, 0.09),
+    -8px 12px 12px 0px rgba(156, 182, 186, 0.09),
+    1px 2px 4px 0px rgba(156, 182, 186, 0.08);
   /* Figma "card shadow M" — step cards + opened menus plate */
   --step-card-shadow:
     -12px -40px 30px 0px rgba(156, 182, 186, 0.1),
@@ -135,6 +143,10 @@ button:disabled,
 
 .step-card-shadow {
   box-shadow: var(--step-card-shadow);
+}
+
+.mobile-step-shadow {
+  box-shadow: var(--mobile-step-shadow);
 }
 
 .menu-shadow-xl {

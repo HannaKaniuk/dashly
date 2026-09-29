@@ -41,10 +41,9 @@ export function MobileStepCard({
     >
       <article
         id={`step-${step.id}`}
-        className="step-card-shadow relative h-[min(420px,112vw)] min-h-[360px] w-full overflow-hidden rounded-[20px] border border-solid"
+        className="mobile-step-shadow relative h-[420px] w-full overflow-hidden rounded-[20px]"
         style={{
           background: step.mobileBgCss,
-          borderColor: step.mobileBorder,
           zIndex: index + 1,
         }}
       >
@@ -71,7 +70,15 @@ export function MobileStepCard({
                 )}
               >
                 <div className="relative h-12 w-[100px] shrink-0 overflow-hidden">
-                  <span className="absolute left-1/2 top-[32.5px] -translate-x-1/2 -translate-y-1/2 text-center text-[91.429px] font-medium leading-none tracking-[-1.8286px] text-neutral-600">
+                  <span
+                    className={cn(
+                      "absolute -translate-x-1/2 -translate-y-1/2 text-center text-[91.429px] font-medium leading-none tracking-[-1.8286px] text-neutral-600",
+                      isCleanse && "left-[calc(50%-2.5px)] top-[32.93px]",
+                      (isTreat || isMoisturise) &&
+                        "left-[calc(50%+0.5px)] top-[32.5px]",
+                      isProtect && "left-1/2 top-[32.5px]",
+                    )}
+                  >
                     {step.number}
                   </span>
                 </div>
@@ -87,16 +94,23 @@ export function MobileStepCard({
                   {step.title}
                 </h3>
               </div>
-              <p className="font-caveat text-[32px] font-bold leading-none text-neutral-500">
+              <p
+                className={cn(
+                  "font-caveat text-[32px] leading-none text-neutral-500",
+                  isTreat ? "font-normal" : "font-bold",
+                )}
+              >
                 {step.tagline}
               </p>
             </div>
 
             <p
               className={cn(
-                step.mobileDescSize === "16"
-                  ? "text-base font-normal leading-[1.1]"
-                  : "text-lg font-bold leading-[1.3]",
+                isProtect
+                  ? "w-[320px] text-[18px] font-bold leading-[23px]"
+                  : step.mobileDescSize === "16"
+                    ? "text-base font-normal leading-[1.1]"
+                    : "text-lg font-bold leading-[1.3]",
               )}
               style={{ color: step.mobileDescColor }}
             >
@@ -104,8 +118,8 @@ export function MobileStepCard({
             </p>
           </div>
 
-          <span className="cta-underline inline-flex items-center gap-2 pb-px text-[18px] font-normal leading-[1.3] text-neutral-900">
-            {step.cta}
+          <span className="inline-flex h-[23px] w-fit items-center gap-2 self-start whitespace-nowrap text-[18px] font-normal leading-[23px] text-neutral-900">
+            {isProtect ? `${step.cta} ` : step.cta}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/icons/mobile/arrow-down-dark.svg"
@@ -117,7 +131,7 @@ export function MobileStepCard({
           </span>
 
           {isProtect ? (
-            <div className="relative h-[92.041px] w-[185.612px] overflow-hidden rounded-[30px]">
+            <div className="relative h-[92.041px] w-[185.612px] shrink-0 overflow-hidden rounded-[30px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 alt={step.imageAlt}
@@ -140,7 +154,7 @@ export function MobileStepCard({
         ) : null}
 
         {isTreat ? (
-          <div className="absolute bottom-[-1px] right-[-1px] h-[110px] w-[300px] overflow-hidden rounded-[17.712px]">
+          <div className="absolute bottom-0 right-0 h-[110px] w-[300px] overflow-hidden rounded-[17.712px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               alt={step.imageAlt}
@@ -151,7 +165,7 @@ export function MobileStepCard({
         ) : null}
 
         {isMoisturise ? (
-          <div className="absolute bottom-[-1px] right-[-1px] h-[210px] w-[300px] overflow-hidden">
+          <div className="absolute bottom-0 right-0 h-[210px] w-[300px] overflow-hidden">
             <div className="absolute left-[171.05px] top-[34.51px] h-[156.964px] w-[104.771px] overflow-hidden rounded-[30px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -162,6 +176,12 @@ export function MobileStepCard({
             </div>
           </div>
         ) : null}
+
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-20 rounded-[20px] border border-solid"
+          style={{ borderColor: step.mobileBorder }}
+        />
       </article>
     </div>
   );

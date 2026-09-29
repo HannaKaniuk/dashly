@@ -189,6 +189,17 @@ export function Hero({ announcements }: Props) {
             <div className="soft-shadow relative h-[807px] w-full overflow-hidden rounded-b-[40px] bg-neutral-200">
               <MobileHeroBlurs />
 
+              <div className="absolute left-1/2 top-[540.18px] z-[1] h-[218.411px] w-[327.576px] -translate-x-1/2 overflow-hidden rounded-[30px]">
+                <Image
+                  src="/images/hero/woman.jpg"
+                  alt="Woman with glowing skin resting peacefully"
+                  fill
+                  priority
+                  sizes="328px"
+                  className="object-cover"
+                />
+              </div>
+
               <div className="absolute left-1/2 top-[162px] z-10 flex h-[272px] w-[319px] -translate-x-1/2 flex-col items-center gap-[25px]">
                 <div className="flex w-full flex-col gap-[15px]">
                   <h1 className="w-full text-center text-[40px] font-bold leading-[0.9] tracking-[-0.8px] text-neutral-900">
@@ -227,12 +238,12 @@ export function Hero({ announcements }: Props) {
               </div>
             </div>
 
-            <div className="absolute left-1/2 top-[26px] z-30 flex w-full -translate-x-1/2 flex-col items-center gap-2 px-3.5">
+            <div className="absolute left-1/2 top-[26px] z-30 flex w-full -translate-x-1/2 flex-col items-center gap-2">
               <AnnouncementBar
                 messages={announcements}
-                className="max-w-[354px] font-normal"
+                className="!w-[354px] !max-w-[354px] [&_p]:!font-normal"
               />
-              <Header mobileOnlyIcons className="w-[347px]" />
+              <Header mobileOnlyIcons className="!w-[347px]" />
             </div>
           </div>
         </DesignFrame>

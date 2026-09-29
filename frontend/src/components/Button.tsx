@@ -89,22 +89,16 @@ function ArrowUpRight({ className }: { className?: string }) {
   );
 }
 
-function ArrowDown({ className }: { className?: string }) {
+function ArrowDown() {
   return (
-    <svg
-      className={cn("size-5 shrink-0", className)}
-      viewBox="0 0 20 20"
-      fill="none"
-      aria-hidden
-    >
-      <path
-        d="M10 4v12M10 16l-4-4M10 16l4-4"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/icons/arrow-down.svg"
+      alt=""
+      width={20}
+      height={20}
+      className="shrink-0"
+    />
   );
 }
 
@@ -131,7 +125,12 @@ export function Button({
       {...props}
     >
       <CtaRings variant={variant} />
-      <span className="relative z-10 inline-flex items-center gap-1.5">
+      <span
+        className={cn(
+          "relative z-10 inline-flex items-center",
+          icon === "arrow-down" ? "gap-2" : "gap-1.5",
+        )}
+      >
         {children}
         {icon === "arrow-up-right" && <ArrowUpRight />}
         {icon === "arrow-down" && <ArrowDown />}

@@ -46,12 +46,19 @@ function IconButton({
 function SearchIcon() {
   return (
     <svg viewBox="0 0 22 22" fill="none" aria-hidden>
-      <circle cx="10" cy="10" r="6.5" stroke="currentColor" strokeWidth="1.6" />
       <path
-        d="M15 15l4 4"
+        d="M9.96875 17.1875C13.9556 17.1875 17.1875 13.9556 17.1875 9.96875C17.1875 5.98194 13.9556 2.75 9.96875 2.75C5.98194 2.75 2.75 5.98194 2.75 9.96875C2.75 13.9556 5.98194 17.1875 9.96875 17.1875Z"
         stroke="currentColor"
-        strokeWidth="1.6"
+        strokeWidth="0.6875"
         strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M15.0726 15.0731L19.2492 19.2497"
+        stroke="currentColor"
+        strokeWidth="0.6875"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
