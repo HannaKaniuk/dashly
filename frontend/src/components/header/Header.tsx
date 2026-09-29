@@ -6,7 +6,6 @@ import { CartIcon, HeartIcon, MenuIcon, SearchIcon } from "./Icons";
 
 type Props = {
   className?: string;
-  mobileOnlyIcons?: boolean;
 };
 
 function IconButton({
@@ -14,21 +13,18 @@ function IconButton({
   children,
   badge,
   className,
-  size = 40,
 }: {
   label: string;
   children: React.ReactNode;
   badge?: string;
   className?: string;
-  size?: 40 | 44;
 }) {
   return (
     <button
       type="button"
       aria-label={label}
       className={cn(
-        "soft-shadow group relative flex items-center justify-center rounded-full text-neutral-900 transition-colors duration-300 hover:text-accents-teal",
-        size === 44 ? "size-11" : "size-10",
+        "soft-shadow group relative flex size-10 shrink-0 items-center justify-center rounded-full text-neutral-900 transition-colors duration-300 hover:text-accents-teal",
         className,
       )}
     >
@@ -44,45 +40,17 @@ function IconButton({
   );
 }
 
-export function Header({ className, mobileOnlyIcons }: Props) {
-  if (mobileOnlyIcons) {
-    return (
-      <header
-        className={cn(
-          "relative z-30 flex h-[50px] w-full items-center justify-end",
-          className,
-        )}
-      >
-        <div className="flex items-center gap-1">
-          <IconButton label="Open menu" size={44} className="bg-neutral-400">
-            <MenuIcon />
-          </IconButton>
-          <IconButton label="Wishlist" size={40} className="bg-white">
-            <HeartIcon />
-          </IconButton>
-          <IconButton
-            label="Shopping bag"
-            badge="2"
-            size={44}
-            className="bg-white"
-          >
-            <CartIcon />
-          </IconButton>
-        </div>
-      </header>
-    );
-  }
-
+export function Header({ className }: Props) {
   return (
     <header
       className={cn(
-        "relative z-30 flex w-full items-center justify-between",
+        "relative z-30 flex h-[50px] w-full items-center justify-end",
         className,
       )}
     >
       <a
         href="#top"
-        className="font-logo text-[28px] font-bold leading-none tracking-tight text-black transition-opacity hover:opacity-80 md:text-[40px]"
+        className="hero-logo font-logo absolute left-0 text-[clamp(28px,2.78cqi,40px)] font-bold leading-none tracking-tight text-black transition-opacity hover:opacity-80"
         onClick={(e) => {
           e.preventDefault();
           window.scrollTo({ top: 0, behavior: "smooth" });
@@ -92,7 +60,7 @@ export function Header({ className, mobileOnlyIcons }: Props) {
       </a>
 
       <nav
-        className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-10 md:flex"
+        className="hero-nav absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-10"
         aria-label="Primary"
       >
         {NAV_LINKS.map((link) => (
@@ -106,21 +74,25 @@ export function Header({ className, mobileOnlyIcons }: Props) {
         ))}
       </nav>
 
-      <div className="flex items-center gap-2">
-        <span className="hidden md:inline-flex">
-          <IconButton label="Search" className="bg-white">
-            <SearchIcon />
+      <div className="flex items-center gap-1">
+        <span className="hero-menu inline-flex">
+          <IconButton label="Open menu" className="size-11 bg-neutral-400">
+            <MenuIcon />
           </IconButton>
         </span>
-        <span className="md:hidden">
-          <IconButton label="Open menu" className="bg-white">
-            <MenuIcon />
+        <span className="hero-search inline-flex">
+          <IconButton label="Search" className="bg-white">
+            <SearchIcon />
           </IconButton>
         </span>
         <IconButton label="Wishlist" className="bg-white">
           <HeartIcon />
         </IconButton>
-        <IconButton label="Shopping bag" badge="2" className="bg-white">
+        <IconButton
+          label="Shopping bag"
+          badge="2"
+          className="size-11 bg-white"
+        >
           <CartIcon />
         </IconButton>
       </div>
