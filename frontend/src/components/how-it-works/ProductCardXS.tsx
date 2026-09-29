@@ -102,7 +102,7 @@ export function ProductCardXS({ product, className }: Props) {
       <button
         type="button"
         aria-label={`Add ${product.title} to wishlist`}
-        className="heart-shadow absolute right-[7px] top-[122px] z-10 flex size-[33px] items-center justify-center rounded-full bg-neutral-200 p-[7px]"
+        className="heart-shadow absolute right-[7px] top-[118px] z-10 flex size-[32px] items-center justify-center rounded-full bg-neutral-200"
       >
         <Asset
           src="/icons/mobile/heart-product.svg"

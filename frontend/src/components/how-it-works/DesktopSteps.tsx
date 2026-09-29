@@ -35,7 +35,7 @@ export function DesktopSteps({
   return (
     <div className="relative hidden w-full pb-32 pt-[160px] lg:block">
       <div className="mx-auto flex w-[min(100%,89%)] flex-col items-center gap-[clamp(3rem,6vw,5rem)] px-4 lg:px-0">
-        <div className="card-shadow flex w-full max-w-[46vw] flex-col items-center gap-3 rounded-[200px] bg-gradient-to-b from-[#f3f5f5] from-[11.5%] to-[#f5fcfd] to-[104.6%] px-[clamp(2rem,11vw,12rem)] py-7 text-center">
+        <div className="step-card-shadow flex w-full max-w-[46vw] flex-col items-center gap-3 rounded-[200px] bg-gradient-to-b from-[#f3f5f5] from-[11.5%] to-[#f5fcfd] to-[104.6%] px-[clamp(2rem,11vw,12rem)] py-7 text-center">
           <h2 className="flex items-center gap-1.5 text-[clamp(2rem,3vw,2rem)] font-bold leading-none text-neutral-900">
             How it
             <span
