@@ -11,6 +11,8 @@ services:
     startCommand: npm run start
     healthCheckPath: /admin
     envVars:
+      - key: NODE_ENV
+        value: "production"
       - key: NODE_VERSION
         value: "20"
       - key: HOST
