@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { STEPS } from "@/data/steps";
 import type { Product, ProductCategory } from "@/lib/strapi";
 import { CategoryTabs } from "./CategoryTabs";
+import { MobileShopModal } from "./MobileShopModal";
 import { ProductCard } from "./ProductCard";
 import { StepCard } from "./StepCard";
 import { MobileStepCard } from "./MobileStepCard";
@@ -50,6 +51,7 @@ export function HowItWorks({ products, categories }: Props) {
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(
     categories[0]?.documentId ?? null,
   );
+  const [mobileShopOpen, setMobileShopOpen] = useState(false);
 
   useEffect(() => {
     if (!activeCategoryId && categories[0]) {
@@ -129,6 +131,11 @@ export function HowItWorks({ products, categories }: Props) {
     scrollToStep(index);
   };
 
+  const openMobileShop = (index: number) => {
+    setShopStep(index);
+    setMobileShopOpen(true);
+  };
+
   const stackGap = "clamp(7.5rem, 18vh, 16rem)";
   const mobileStackGap = "clamp(5.5rem, 22vh, 11rem)";
 
@@ -188,6 +195,7 @@ export function HowItWorks({ products, categories }: Props) {
                     index={index}
                     isCovered={activeStep > index}
                     coverDepth={coverDepth}
+                    onShop={() => openMobileShop(index)}
                   />
                 </div>
               );
@@ -291,6 +299,17 @@ export function HowItWorks({ products, categories }: Props) {
           </div>
         </div>
       </div>
+
+      <MobileShopModal
+        open={mobileShopOpen}
+        stepIndex={shopStep}
+        onStepChange={setShopStep}
+        onClose={() => setMobileShopOpen(false)}
+        products={filteredProducts}
+        categories={categories}
+        activeCategoryId={activeCategoryId}
+        onCategoryChange={setActiveCategoryId}
+      />
     </section>
   );
 }

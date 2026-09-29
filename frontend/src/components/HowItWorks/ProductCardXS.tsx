@@ -1,12 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import {
-  formatGBP,
-  mediaUrl,
-  resolvePrice,
-  type Product,
-} from "@/lib/strapi";
+import { formatGBP, mediaUrl, resolvePrice, type Product } from "@/lib/strapi";
 import { cn } from "@/lib/cn";
 
 type Props = {
@@ -21,8 +16,8 @@ export function ProductCardXS({ product, className }: Props) {
 
   return (
     <div className={cn("relative w-[160px] shrink-0", className)}>
-      <article className="soft-shadow relative flex w-[160px] flex-col gap-3 overflow-hidden rounded-[12px] border border-[#f3f5f5] bg-white px-1 pb-3 pt-1">
-        <div className="relative h-[150.204px] w-[149.901px] shrink-0 overflow-hidden rounded-[12px] bg-neutral-200">
+      <article className="relative flex w-[160px] flex-col gap-3 overflow-hidden rounded-[12px] border border-[#f3f5f5] bg-white px-1 pb-3 pt-1">
+        <div className="relative h-[150px] w-[150px] shrink-0 overflow-hidden rounded-[12px] bg-neutral-200">
           {image ? (
             <Image
               src={image}
@@ -35,7 +30,7 @@ export function ProductCardXS({ product, className }: Props) {
         </div>
 
         <div className="flex w-full flex-col gap-2">
-          <h3 className="line-clamp-2 overflow-hidden text-ellipsis text-base font-medium leading-[1.2] text-neutral-900">
+          <h3 className="line-clamp-3 h-[57px] overflow-hidden text-base font-medium leading-[1.2] text-neutral-900">
             {product.title}
             {product.volume ? (
               <>

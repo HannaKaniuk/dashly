@@ -37,7 +37,7 @@ export function CategoryTabs({
             ? cn(
                 "flex items-center justify-center p-3 text-[18px] leading-[1.3]",
                 active
-                  ? "bg-neutral-900 font-medium text-[#fcfcfc]"
+                  ? "soft-shadow bg-neutral-900 font-medium text-[#fcfcfc]"
                   : "bg-transparent font-normal text-neutral-900",
               )
             : cn(
@@ -57,15 +57,15 @@ export function CategoryTabs({
     return (
       <div
         className={cn(
-          "-mx-3 w-[calc(100%+1.5rem)] shrink-0 overflow-x-auto scrollbar-hide",
+          "w-full shrink-0 overflow-x-auto scrollbar-hide",
           className,
         )}
       >
-        <div className="inline-flex w-max pl-3 pr-3">
+        <div className="inline-flex w-max px-3 pb-6">
           <div
             role="tablist"
             aria-label="Product categories"
-            className="relative z-10 inline-flex h-[55px] w-max items-center gap-3 rounded-[200px] bg-neutral-100 p-1"
+            className="relative z-10 inline-flex h-[55px] w-max items-center gap-3 rounded-[200px] bg-white p-1"
           >
             {tabs}
           </div>

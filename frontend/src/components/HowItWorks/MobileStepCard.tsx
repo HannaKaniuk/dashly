@@ -8,6 +8,7 @@ type Props = {
   index: number;
   isCovered: boolean;
   coverDepth: number;
+  onShop: () => void;
 };
 
 const titleSizeClass = {
@@ -21,6 +22,7 @@ export function MobileStepCard({
   index,
   isCovered,
   coverDepth,
+  onShop,
 }: Props) {
   const isProtect = index === 3;
   const isMoisturise = index === 2;
@@ -118,7 +120,12 @@ export function MobileStepCard({
             </p>
           </div>
 
-          <span className="inline-flex h-[23px] w-fit items-center gap-2 self-start whitespace-nowrap text-[18px] font-normal leading-[23px] text-neutral-900">
+          <button
+            type="button"
+            onClick={onShop}
+            aria-haspopup="dialog"
+            className="inline-flex h-[23px] w-fit items-center gap-2 self-start whitespace-nowrap border-0 bg-transparent p-0 text-[18px] font-normal leading-[23px] text-neutral-900"
+          >
             {isProtect ? `${step.cta} ` : step.cta}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -128,7 +135,7 @@ export function MobileStepCard({
               height={20}
               className="size-5 shrink-0"
             />
-          </span>
+          </button>
 
           {isProtect ? (
             <div className="relative h-[92.041px] w-[185.612px] shrink-0 overflow-hidden rounded-[30px]">
